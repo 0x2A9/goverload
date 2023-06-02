@@ -1,41 +1,39 @@
 package goverload
 
-import (
-	"lamia-mortis/goverload/requests"
-)
+import "lamia-mortis/goverload/requests"
 
-func NewOverloader[T goverload.IRequestBodyType]() *Overloader[T] {
-	return &Overloader[T]{
-		Runners: map[string]*Runner[T]{},
+func NewOverloader[RBT requests.IRequestBodyType]() *Overloader[RBT] {
+	return &Overloader[RBT]{
+		Runners: map[string]*Runner[RBT]{},
 	}
 }
 
-func NewRequest[T goverload.IRequestBodyType](kind string, name string) goverload.IRequest[T] {
+func NewRequest[RBT requests.IRequestBodyType](kind string, name string) requests.IRequest[RBT] {
 	// validator.isValid(name)
 
 	switch kind {
 	case "http":
-		return NewHttpRequest[T](name)
+		return NewHttpRequest[RBT](name)
 	case "ws": 
-	    return NewWsRequest[T](name)	
+	    return NewWsRequest[RBT](name)	
 	default: 
-	    return &goverload.Request[T]{
+	    return &requests.Request[RBT]{
 			Name: name,
 		}	
 	}
 }
 
-func NewHttpRequest[T goverload.IRequestBodyType](name string) *goverload.HttpRequest[T] {
-	return &goverload.HttpRequest[T]{
-		Request: goverload.Request[T]{
+func NewHttpRequest[RBT requests.IRequestBodyType](name string) *requests.HttpRequest[RBT] {
+	return &requests.HttpRequest[RBT]{
+		Request: requests.Request[RBT]{
 			Name: name,
 		},
 	}
 }
 
-func NewWsRequest[T goverload.IRequestBodyType](name string) *goverload.WsRequest[T] {
-	return &goverload.WsRequest[T]{
-		Request: goverload.Request[T]{
+func NewWsRequest[RBT requests.IRequestBodyType](name string) *requests.WsRequest[RBT] {
+	return &requests.WsRequest[RBT]{
+		Request: requests.Request[RBT]{
 			Name: name,
 		},
 	}

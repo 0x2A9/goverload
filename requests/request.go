@@ -1,58 +1,61 @@
-package goverload
+package requests
 
-type IRequest[T IRequestBodyType] interface {
+type IRequest[RBT IRequestBodyType] interface {
 	GetName()                      string
-	SetOrigin(string)              IRequest[T]
-	SetPath(string)                IRequest[T]
-	SetParams(map[string]string)   IRequest[T]
-	SetHeaders(map[string]string)  IRequest[T]
-	SetBody(T)                     IRequest[T]
+	SetOrigin(string)              IRequest[RBT]
+	SetPath(string)                IRequest[RBT]
+	SetParams(map[string]string)   IRequest[RBT]
+	SetHeaders(map[string]string)  IRequest[RBT]
+	SetBody(RBT)                   IRequest[RBT]
+	Send()                         
 }
 
-type Request[T IRequestBodyType] struct {
-	// upper case for the property name for having possibility to use it from other packages, files and folders 
-	// unknown field path in struct literal of type "lamia-mortis/goverload/requests".Request[T]
-	Name     string              
+type Request[RBT IRequestBodyType] struct {
+	Name     string      
 	Origin   string
 	Path     string 
 	Params   map[string]string
 	Headers  map[string]string
-	Body     T
+	Body     RBT
 }
 
-func (r *Request[T]) GetName() string {
-	return r.Name
+func (req *Request[RBT]) GetName() string {
+	return req.Name
 }
 
-func (r *Request[T]) SetOrigin(origin string) IRequest[T] {
+func (req *Request[RBT]) SetOrigin(origin string) IRequest[RBT] {
 	// validator.isValid(origin)
 
-	r.Origin = origin 
-	return r
+	req.Origin = origin 
+	return req
 }
 
-func (r *Request[T]) SetPath(path string) IRequest[T] {
+func (req *Request[RBT]) SetPath(path string) IRequest[RBT] {
 	// validator.isValid(path)
 
-	r.Path = path
-	return r
+	req.Path = path
+	return req
 }
 
-func (r *Request[T]) SetParams(params map[string]string) IRequest[T] {
+func (req *Request[RBT]) SetParams(params map[string]string) IRequest[RBT] {
 	// validator.isValid(params)
 
-	r.Params = params
-	return r
+	req.Params = params
+	return req
 }
 
-func (r *Request[T]) SetHeaders(headers map[string]string) IRequest[T] {
-	r.Headers = headers
-	return r
+func (req *Request[RBT]) SetHeaders(headers map[string]string) IRequest[RBT] {
+	req.Headers = headers
+	return req
 }
 
-func (r *Request[T]) SetBody(body T) IRequest[T] {
-	r.Body = body
-	return r
+func (req *Request[RBT]) SetBody(body RBT) IRequest[RBT] {
+	req.Body = body
+	return req
+}
+
+func (req *Request[RBT]) Send() {
+
 }
 
 type IRequestBodyType interface {

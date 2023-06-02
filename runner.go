@@ -2,14 +2,16 @@ package goverload
 
 import (
 	"lamia-mortis/goverload/requests"
+	"lamia-mortis/goverload/handlers"
 )
 
-type Runner[T goverload.IRequestBodyType] struct {
-	Request  goverload.IRequest[T]
+type Runner[RBT requests.IRequestBodyType] struct {
+	Request  requests.IRequest[RBT]
+	Handler  handlers.IHandler[RBT]
 	Config   *RunnerConfig
 }
 
-func (r *Runner[T]) SetConfig(amount int16, frequency int16) *Runner[T] {
+func (r *Runner[RBT]) SetConfig(amount int16, frequency int16) *Runner[RBT] {
 	r.Config.Amount     = amount
 	r.Config.Frequency  = frequency
 
