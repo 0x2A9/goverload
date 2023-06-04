@@ -19,7 +19,7 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 	wsReq, ok := req.(*requests.WsRequest[RBT])
 
 	if (ok) {
-		conn, _, _, err := ws.DefaultDialer.Dial(context.Background(), wsReq.Origin)
+		conn, _, _, err := ws.DefaultDialer.Dial(context.Background(), wsReq.GetOrigin())
 
 		if err != nil {
 			fmt.Errorf("Cannot connect: " + err.Error())

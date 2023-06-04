@@ -16,7 +16,7 @@ func (ha *HttpAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IRespons
 
 	if (ok) {
 		method  := httpReq.Method
-		url     := httpReq.Origin + httpReq.Path
+		url     := httpReq.GetOrigin() + httpReq.Path
 		headers := httpReq.Headers
 		// body    := httpReq.Body
 

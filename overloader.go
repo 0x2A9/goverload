@@ -1,8 +1,8 @@
 package goverload
 
 import (
-	"lamia-mortis/goverload/requests"
 	"lamia-mortis/goverload/handlers"
+	"lamia-mortis/goverload/requests"
 )
 
 type Overloader[RBT requests.IRequestBodyType] struct {
@@ -10,17 +10,10 @@ type Overloader[RBT requests.IRequestBodyType] struct {
 }
 
 func (o *Overloader[RBT]) AddRequest(req requests.IRequest[RBT]) *Runner[RBT] {
-	var handler handlers.IHandler[RBT]
-
-	switch req.(type) {
-	    case *requests.HttpRequest[RBT]:
-		    handler = handlers.NewHttpHandler[RBT]()				
-	}
-
 	o.Runners[req.GetName()] = &Runner[RBT]{ 
 		Request: req, 
-		Handler: handler,
-		Config: &RunnerConfig{
+		Handler: handlers.NewHandler[RBT](req.Type()),
+		Config:  &RunnerConfig{
 			Amount:     0,
 			Frequency:  0,
 		},
