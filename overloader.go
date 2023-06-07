@@ -1,7 +1,7 @@
 package goverload
 
 import (
-	"lamia-mortis/goverload/handlers"
+	"fmt"
 	"lamia-mortis/goverload/requests"
 )
 
@@ -12,7 +12,7 @@ type Overloader[RBT requests.IRequestBodyType] struct {
 func (o *Overloader[RBT]) AddRequest(req requests.IRequest[RBT]) *Runner[RBT] {
 	o.Runners[req.GetName()] = &Runner[RBT]{ 
 		Request: req, 
-		Handler: handlers.NewHandler[RBT](req.Type()),
+		Handler: NewHandler[RBT](req.Type()),
 		Config:  &RunnerConfig{
 			Amount:     0,
 			Frequency:  0,
@@ -20,4 +20,17 @@ func (o *Overloader[RBT]) AddRequest(req requests.IRequest[RBT]) *Runner[RBT] {
 	}
 
 	return o.Runners[req.GetName()]
+}
+
+func (o *Overloader[RBT]) Run() bool {
+	for reqName, runner := range o.Runners {
+		err := runner.Run()
+
+		if err != nil {
+			fmt.Printf("Error during the %s request execution: %s", reqName, err.Error())
+			return false
+		}
+	} 
+
+	return true
 }

@@ -22,7 +22,7 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 		conn, _, _, err := ws.DefaultDialer.Dial(context.Background(), wsReq.GetOrigin())
 
 		if err != nil {
-			fmt.Errorf("Cannot connect: " + err.Error())
+			panic("Cannot connect: " + err.Error())
 		}
 
 		fmt.Println("Connected to server")
@@ -34,7 +34,7 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 			    body, err = json.Marshal(rawBody)
 
 				if err != nil {
-					fmt.Errorf("Request JSON parsind error: " + err.Error())
+					panic("Request JSON parsind error: " + err.Error())
 				}
 			case string:
 				body = []byte(rawBody)
@@ -43,7 +43,7 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 		err = wsutil.WriteClientMessage(conn, ws.OpText, body)
 
 		if err != nil {
-			fmt.Errorf("Cannot send: " + err.Error())
+			panic("Cannot send: " + err.Error())
 		}
 
 		fmt.Println("Client message sent")
@@ -51,7 +51,7 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 		res, _, err := wsutil.ReadServerData(conn)
 
 		if err != nil {
-			fmt.Errorf("Cannot receive data: " + err.Error())
+			fmt.Printf("Cannot receive data: " + err.Error())
         }
 
 		fmt.Println("Server message received")
@@ -67,7 +67,7 @@ func (wa *WsAdapter[RBT]) parseResponse(res []byte) responses.IResponse {
 	err := json.Unmarshal(res, &content)
 
 	if err != nil {
-		fmt.Errorf("Response JSON parsind error: " + err.Error())
+		fmt.Printf("Response JSON parsind error: " + err.Error())
 	}
 
 	return &responses.Response{
