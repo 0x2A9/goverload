@@ -84,5 +84,5 @@ func (req *Request[RBT]) Send() {
 }
 
 type IRequestBodyType interface {
-	string | map[string]string
+	string | []byte
 }
