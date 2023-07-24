@@ -24,13 +24,23 @@ func (o *Overloader[RBT]) AddRequest(req requests.IRequest[RBT]) *Runner[RBT] {
 
 func (o *Overloader[RBT]) Run() bool {
 	for reqName, runner := range o.Runners {
-		err := runner.Run()
+		runner.Run()
 
-		if err != nil {
-			fmt.Printf("Error during the %s request execution: %s", reqName, err.Error())
-			return false
+		count := 0
+
+		for {
+			select {
+			case err := <-errChan:
+				fmt.Printf("Error during the %s request execution: %s", reqName, err.Error())
+				return false
+			case res := <-resChan:
+				count++
+				fmt.Printf("Respone #%d for the %s request:\n\nHeaders \n%s\n\nBody \n%s\n\n", count, reqName, res.GetHeadersString(), res.GetBodyString())
+			case <-quitChan:
+				return true
+			}
 		}
-	} 
+	}
 
 	return true
 }

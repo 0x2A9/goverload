@@ -7,13 +7,14 @@ import (
 	"lamia-mortis/goverload/responses"
 )
 
-var resChan chan responses.IResponse  = make(chan responses.IResponse, 1)
-var errChan chan error                = make(chan error, 1)
+var resChan  chan responses.IResponse = make(chan responses.IResponse)
+var errChan  chan error = make(chan error)
+var quitChan chan bool  = make(chan bool) 
 
 type Runner[RBT requests.IRequestBodyType] struct {
-	Request  requests.IRequest[RBT]
-	Handler  IHandler[RBT]
-	Config   *RunnerConfig
+	Request requests.IRequest[RBT]
+	Handler IHandler[RBT]
+	Config  *RunnerConfig
 }
 
 func (r *Runner[RBT]) SetConfig(amount uint16, frequency uint16) *Runner[RBT] {
@@ -23,28 +24,38 @@ func (r *Runner[RBT]) SetConfig(amount uint16, frequency uint16) *Runner[RBT] {
 	return r
 }
 
-func (r *Runner[RBT]) Run() error {
+func (r *Runner[RBT]) Run() {
 	interval := r.calcInterval()
-	var wg sync.WaitGroup
+	wg       := &sync.WaitGroup{}
 
-    for i := 0; i < int(r.Config.Amount); i++ {
+	for i := 0; i < int(r.Config.Amount); i++ {
 		wg.Add(1)
-		go r.Handler.Send(r.Request)
 
-		err := <- errChan
-		if err != nil {
-			return err
-		}
+		go func(req requests.IRequest[RBT]) {
+			defer wg.Done()
+			r.Handler.Send(req)
+		}(r.Request)
 
 		time.Sleep(time.Duration(interval) * time.Nanosecond)
-    }
-	
-	wg.Wait()
-	return nil
+	}
+
+	// by default a chan holds no items, so all goroutines are blocked on sending, until something reads from it 
+	// otherwise goroutines never reach the wg.Done() statement 
+	// so closing the channel in it's own goroutine (while reading is executed from the main thread)
+	go func() {
+		// wait for all goroutines to complete
+		wg.Wait() 
+
+		quitChan <- true
+
+		// closing channels after completion of wait for goroutines
+		close(errChan) 
+		close(resChan)
+	}()
 }
 
 /**
- *  return interval between requests in nanoseconds
+ *  return interval (per 1 second) between requests in nanoseconds
  */
 func (r *Runner[RBT]) calcInterval() uint32 {
 	var second uint32 = 1000000000

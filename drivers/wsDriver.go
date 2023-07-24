@@ -59,7 +59,7 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 		return wa.parseResponse(res), nil
 	}
 
-	return nil, errors.New("Request of type WS required")
+	return nil, errors.New("request of type WS required")
 }
 
 func (wa *WsAdapter[RBT]) parseResponse(res []byte) responses.IResponse {

@@ -2,7 +2,6 @@ package goverload
 
 import (
 	"fmt"
-	"sync"
 	"lamia-mortis/goverload/drivers"
 	"lamia-mortis/goverload/helpers"
 	"lamia-mortis/goverload/requests"
@@ -17,15 +16,13 @@ type Handler[RBT requests.IRequestBodyType] struct {
 }
 
 func (h *Handler[RBT]) Send(req requests.IRequest[RBT]) {
-	var wg sync.WaitGroup
 	res, err := h.Driver.Send(req)
 	
 	if err != nil {
-		errChan <- fmt.Errorf("Error during sending the %s request: %s", req.GetName(), err.Error())
+		errChan <- fmt.Errorf("error during sending the %s request: %s", req.GetName(), err.Error())
 	}
 
 	resChan <- res
-	wg.Done()
 }
 
 func NewHandler[RBT requests.IRequestBodyType](reqType string) IHandler[RBT] {
