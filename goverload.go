@@ -1,7 +1,7 @@
 package goverload
 
 import (
-	"lamia-mortis/goverload/helpers"
+	"lamia-mortis/goverload/helpers/enums"
 	"lamia-mortis/goverload/requests"
 )
 
@@ -11,13 +11,13 @@ func NewOverloader[RBT requests.IRequestBodyType]() *Overloader[RBT] {
 	}
 }
 
-func NewRequest[RBT requests.IRequestBodyType](p helpers.Protocol, name string) requests.IRequest[RBT] {
+func NewRequest[RBT requests.IRequestBodyType](p enums.Protocol, name string) requests.IRequest[RBT] {
 	// validator.isValid(name)
 
 	switch p {
-	case helpers.HTTP:
+	case enums.HTTP:
 		return NewHttpRequest[RBT](p.String(), name)
-	case helpers.WS: 
+	case enums.WS: 
 	    return NewWsRequest[RBT](p.String(), name)	
 	default: 
 	    panic("The request protocol is not supported")

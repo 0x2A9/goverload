@@ -57,13 +57,20 @@ func (r *Runner[RBT]) Run() {
 /**
  *  return interval (per 1 second) between requests in nanoseconds
  */
-func (r *Runner[RBT]) calcInterval() uint32 {
-	var second uint32 = 1000000000
-	return second / uint32(r.Config.Frequency)
+func (r *Runner[RBT]) calcInterval() int {
+	var second int = 1000000000
+	var frequency int = int(r.Config.Frequency)
+
+	if frequency > second {
+		frequency = second
+	}
+
+	return second / frequency
 }
 
 type RunnerConfig struct {
-	/* RPS */
+	/* RPS can't be more than 1_000_000_000 */
 	Frequency  uint16  
+	/* Total */
 	Amount     uint16
 }

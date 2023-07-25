@@ -29,12 +29,13 @@ func (wa *WsAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IResponse,
 
 		var body []byte
 
+		// using `any` for having ability to check the generic parameter type
 		switch rawBody := any(wsReq.Body).(type) {
 			case map[string]string:
 			    body, err = json.Marshal(rawBody)
 
 				if err != nil {
-					panic("Request JSON parsind error: " + err.Error())
+					panic("Request JSON parsing error: " + err.Error())
 				}
 			case string:
 				body = []byte(rawBody)
