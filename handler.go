@@ -3,7 +3,7 @@ package goverload
 import (
 	"fmt"
 	"lamia-mortis/goverload/drivers"
-	"lamia-mortis/goverload/helpers"
+	"lamia-mortis/goverload/helpers/enums"
 	"lamia-mortis/goverload/requests"
 )
 
@@ -29,9 +29,9 @@ func NewHandler[RBT requests.IRequestBodyType](reqType string) IHandler[RBT] {
 	var driver drivers.IDriver[RBT]
 
 	switch reqType {
-	case helpers.HTTP.String():
+	case enums.HTTP.String():
 		driver = &drivers.HttpAdapter[RBT]{}
-	case helpers.WS.String(): 
+	case enums.WS.String(): 
 	    driver = &drivers.WsAdapter[RBT]{}
 	default: 
 	    panic("Driver for the selected protocol is not exist")
