@@ -1,25 +1,26 @@
 package requests
 
 type IRequest[RBT IRequestBodyType] interface {
-	GetName()                      string
-	GetOrigin()                    string
-	GetProtocol()                  string
-	SetHost(string)                IRequest[RBT]
-	SetPort(string)                IRequest[RBT]
-	SetPath(string)                IRequest[RBT]
-	SetParams(map[string]string)   IRequest[RBT]
-	SetHeaders(map[string]string)  IRequest[RBT]
-	SetBody(RBT)                   IRequest[RBT]
-	Type()                         string
-	Send()                         
+	GetName()                     string
+	GetUri()                      string
+	GetOrigin()                   string
+	GetProtocol()                 string
+	SetHost(string)               IRequest[RBT]
+	SetPort(string)               IRequest[RBT]
+	SetPath(string)               IRequest[RBT]
+	SetParams(map[string]string)  IRequest[RBT]
+	SetHeaders(map[string]string) IRequest[RBT]
+	SetBody(RBT)                  IRequest[RBT]
+	Type()                        string
+	Send()
 }
 
 type Request[RBT IRequestBodyType] struct {
-	Name     string      
+	Name     string
 	Protocol string
-	Host     string 
+	Host     string
 	Port     string
-	Path     string 
+	Path     string
 	Params   map[string]string
 	Headers  map[string]string
 	Body     RBT
@@ -27,6 +28,28 @@ type Request[RBT IRequestBodyType] struct {
 
 func (req *Request[RBT]) GetName() string {
 	return req.Name
+}
+
+func (req *Request[RBT]) GetUri() string {
+	uri := req.Protocol + "://" + req.Host + ":" + req.Port + req.Path
+
+	i := 0
+
+	for key, value := range req.Params {
+		if i == 0 {
+			uri += "?"
+		}
+
+		uri += key + "=" + value
+
+		if i != len(req.Params) - 1 {
+			uri += "&"
+		} 
+
+		i++
+	}
+
+	return uri
 }
 
 func (req *Request[RBT]) GetOrigin() string {
