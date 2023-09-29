@@ -1,11 +1,12 @@
-package responses 
+package responses
 
 import (
 	"encoding/json"
+	"fmt"
 )
 
 type IResponse interface {
-	GetHeaders()        map[string]string
+	GetHeaders()        map[string]any
 	GetHeadersString()  string
 	GetBody()           map[string]any
 	GetBodyString()     string
@@ -13,11 +14,11 @@ type IResponse interface {
 }
 
 type Response struct {
-	Headers  map[string]string
+	Headers  map[string]any
 	Body     map[string]any
 }
 
-func (res *Response) GetHeaders() map[string]string {
+func (res *Response) GetHeaders() map[string]any {
 	return res.Headers
 }
 
@@ -41,4 +42,19 @@ func (res *Response) toString(value any) string {
 	}
 
 	return string(json)
+}
+
+func NewResponse(headers map[string]any, body []byte) IResponse {
+	var content map[string]any
+
+	err := json.Unmarshal(body, &content)
+
+	if err != nil {
+		fmt.Printf("Response JSON parsing error: " + err.Error())
+	}
+
+	return &Response{
+		Headers: headers,
+		Body:    content,
+	}
 }

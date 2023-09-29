@@ -2,7 +2,6 @@ package drivers
 
 import (
 	"bytes"
-	"encoding/json"
 	"errors"
 	"net/http"
 	"reflect"
@@ -19,10 +18,10 @@ func (ha *HttpAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IRespons
 	if ok {
 		var bufferedBody *bytes.Buffer
 
-		method := httpReq.Method
-		url := httpReq.GetOrigin() + httpReq.Path
+		method  := httpReq.Method
+		url     := httpReq.GetUri()
 		headers := httpReq.Headers
-		body := httpReq.Body
+		body    := httpReq.Body
 
 		if reflect.TypeOf(body).String() == "string" {
 			bufferedBody = bytes.NewBufferString(string(body))
@@ -49,24 +48,8 @@ func (ha *HttpAdapter[RBT]) Send(req requests.IRequest[RBT]) (responses.IRespons
 
 		defer res.Body.Close()
 
-		return ha.parseResponse(res), nil
+		return responses.NewResponse(responses.ParseHttp(res)), nil
 	}
 
 	return nil, errors.New("request of type HTTP required")
-}
-
-func (ha *HttpAdapter[RBT]) parseResponse(res *http.Response) responses.IResponse {
-	headers := map[string]string{}
-	content := map[string]interface{}{}
-
-	for name := range res.Header {
-		headers[name] = res.Header.Get(name)
-	}
-
-	json.NewDecoder(res.Body).Decode(&content)
-
-	return &responses.Response{
-		Headers: headers,
-		Body:    content,
-	}
 }
