@@ -27,21 +27,22 @@ func (o *Overloader[RBT]) Run() bool {
 		runner.Run()
 
 		count := 0
-
-		for {
-			select {
-			case err := <-errChan:
-				fmt.Printf("\n\033[31mError during the %s request execution:", reqName)
-				fmt.Printf("\n%s", err.Error())
-				return false
-			case res := <-resChan:
-				count++
-				fmt.Printf("\n\033[32mRespone #%d for the %s request:", count, reqName)
-				fmt.Printf("\n\n\033[37mHeaders \n%s\n\nBody \n%s\n\n", res.GetHeadersString(), res.GetBodyString())
-			case <-quitChan:
-				return true
+		
+		CurrentRunner:
+			for {
+				select {
+				case err := <-errChan:
+					fmt.Printf("\n\033[31mError during the %s request execution:", reqName)
+					fmt.Printf("\n%s", err.Error())
+					return false
+				case res := <-resChan:
+					count++
+					fmt.Printf("\n\033[32mRespone #%d for the %s request:", count, reqName)
+					fmt.Printf("\n\n\033[37mHeaders \n%s\n\nBody \n%s\n\n", res.GetHeadersString(), res.GetBodyString())
+				case <-quitChan:
+					break CurrentRunner
+				}
 			}
-		}
 	}
 
 	return true
