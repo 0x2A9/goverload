@@ -39,18 +39,14 @@ func (r *Runner[RBT]) Run() {
 		time.Sleep(time.Duration(interval) * time.Nanosecond)
 	}
 
-	// by default a chan holds no items, so all goroutines are blocked on sending, until something reads from it 
-	// otherwise goroutines never reach the wg.Done() statement 
+	// by default a chan holds no items, so all goroutines are blocked on sending, until something reads from it
+	// otherwise goroutines never reach the wg.Done() statement
 	// so closing the channel in it's own goroutine (while reading is executed from the main thread)
 	go func() {
 		// wait for all goroutines to complete
-		wg.Wait() 
+		wg.Wait()
 
 		quitChan <- true
-
-		// closing channels after completion of wait for goroutines
-		close(errChan) 
-		close(resChan)
 	}()
 }
 
