@@ -1,7 +1,6 @@
 package responses
 
 import (
-	"fmt"
 	"io"
 	"net/http"
 
@@ -18,7 +17,7 @@ func ParseHttp(res *http.Response) (map[string]any, []byte) {
 	content, error := io.ReadAll(res.Body)
 
 	if error != nil {
-	   fmt.Printf("Error during parsing response: " + error.Error())
+	   panic("Error during parsing response: " + error.Error())
 	}
 
 	return headers, content
