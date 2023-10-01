@@ -69,20 +69,19 @@ if ok {
 ```go
 /* Adding multiple requests to the same run */
 
-overloader       := goverload.NewOverloader[string]()
+overloader        := goverload.NewOverloader[string]()
 
-firstReq         := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
-firstHttpReq, ok := firstReq.(*requests.HttpRequest[string])
+firstReq          := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
+firstHttpReq, okF := firstReq.(*requests.HttpRequest[string])
 
-secReq           := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
-secHttpReq, ok   := secReq.(*requests.HttpRequest[string])
+secReq            := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
+secHttpReq, okS   := secReq.(*requests.HttpRequest[string])
 
-if ok {
+if okF && okS {
 	firstHttpReq.
 	    SetMethod("POST").
 	    SetHost("host").
-	    SetPort("8888").
-	    SetPath("/api/some/path")
+	    SetPort("8888")
 
 	secHttpReq.
 	    SetMethod("GET").

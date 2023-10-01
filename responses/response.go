@@ -2,7 +2,6 @@ package responses
 
 import (
 	"encoding/json"
-	"fmt"
 )
 
 type IResponse interface {
@@ -50,7 +49,7 @@ func NewResponse(headers map[string]any, body []byte) IResponse {
 	err := json.Unmarshal(body, &content)
 
 	if err != nil {
-		fmt.Printf("Response JSON parsing error: " + err.Error())
+		panic("Response JSON parsing error: " + err.Error())
 	}
 
 	return &Response{
