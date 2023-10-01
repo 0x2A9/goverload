@@ -1,5 +1,5 @@
 **QUICK START**<br>
-𝘨𝘙𝘗𝘊 𝘴𝘶𝘱𝘱𝘰𝘳𝘵 𝘪𝘯 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘮𝘦𝘯𝘵
+𝘨𝘙𝘗𝘊 𝘴𝘶𝘱𝘱𝘰𝘳𝘵 𝘪𝘴 𝘪𝘯 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘮𝘦𝘯𝘵
 
 ```go
 import (
@@ -69,32 +69,31 @@ if ok {
 ```go
 /* Adding multiple requests to the same run */
 
-overloader        := goverload.NewOverloader[string]()
+overloader   := goverload.NewOverloader[string]()
 
-firstReq          := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
-firstHttpReq, okF := firstReq.(*requests.HttpRequest[string])
+reqFirst     := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
+httpReq, okF := req.(*requests.HttpRequest[string])
 
-secReq            := goverload.NewRequest[string](enums.HTTP, "http-request-name-id")
-secHttpReq, okS   := secReq.(*requests.HttpRequest[string])
+reqSecond    := goverload.NewRequest[string](enums.WS, "ws-request-name-id")
+wsReq, okS   := reqSecond.(*requests.WsRequest[string])
 
 if okF && okS {
-	firstHttpReq.
+	httpReq.
 	    SetMethod("POST").
 	    SetHost("host").
 	    SetPort("8888")
 
-	secHttpReq.
-	    SetMethod("GET").
+	wsReq.
 	    SetHost("host").
 	    SetPort("88").
 	    SetPath("/api/path")
 
 	overloader.
-	    AddRequest(firstHttpReq).
+	    AddRequest(httpReq).
 	    SetConfig(10, 10)
 
 	overloader.
-	    AddRequest(secHttpReq).
+	    AddRequest(wsReq).
 	    SetConfig(5, 2)		
 
 	overloader.Run()
