@@ -1,9 +1,9 @@
 package goverload
 
 import (
-	"lamia-mortis/goverload/requests"
-	"lamia-mortis/goverload/responses"
-	"lamia-mortis/goverload/stdout"
+	"github.com/lamia-mortis/goverload/requests"
+	"github.com/lamia-mortis/goverload/responses"
+	"github.com/lamia-mortis/goverload/stdout"
 )
 
 type Overloader[RBT requests.IRequestBodyType] struct {

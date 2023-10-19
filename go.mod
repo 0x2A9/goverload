@@ -1,6 +1,6 @@
-module lamia-mortis/goverload
+module  github.com/lamia-mortis/goverload
 
-go 1.20
+go 1.21.3
 
 require github.com/gobwas/ws v1.2.1
 
