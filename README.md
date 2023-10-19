@@ -3,9 +3,9 @@
 
 ```go
 import (
-	"lamia-mortis/goverload"
-	"lamia-mortis/goverload/helpers/enums"
-	"lamia-mortis/goverload/requests"
+	"github.com/lamia-mortis/goverload"
+	"github.com/lamia-mortis/goverload/helpers/enums"
+	"github.com/lamia-mortis/goverload/requests"
 )
 ```
 

@@ -2,9 +2,9 @@ package goverload
 
 import (
 	"fmt"
-	"lamia-mortis/goverload/drivers"
-	"lamia-mortis/goverload/helpers/enums"
-	"lamia-mortis/goverload/requests"
+	"github.com/lamia-mortis/goverload/drivers"
+	"github.com/lamia-mortis/goverload/helpers/enums"
+	"github.com/lamia-mortis/goverload/requests"
 )
 
 type IHandler[RBT requests.IRequestBodyType] interface {
