@@ -1,8 +1,8 @@
 package drivers
 
 import (
-	"github.com/lamia-mortis/goverload/requests"
-	"github.com/lamia-mortis/goverload/responses"
+	"github.com/0x2A9/goverload/requests"
+	"github.com/0x2A9/goverload/responses"
 )
 
 type IDriver[RBT requests.IRequestBodyType] interface {

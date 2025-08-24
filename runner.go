@@ -3,8 +3,8 @@ package goverload
 import (
 	"sync"
 	"time"
-	"github.com/lamia-mortis/goverload/requests"
-	"github.com/lamia-mortis/goverload/responses"
+	"github.com/0x2A9/goverload/requests"
+	"github.com/0x2A9/goverload/responses"
 )
 
 var resChan  chan responses.IResponse = make(chan responses.IResponse)
