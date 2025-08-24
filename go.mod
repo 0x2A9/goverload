@@ -1,4 +1,4 @@
-module  github.com/lamia-mortis/goverload
+module  github.com/0x2A9/goverload
 
 go 1.21.3
 

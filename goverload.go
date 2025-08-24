@@ -1,8 +1,8 @@
 package goverload
 
 import (
-	"github.com/lamia-mortis/goverload/helpers/enums"
-	"github.com/lamia-mortis/goverload/requests"
+	"github.com/0x2A9/goverload/helpers/enums"
+	"github.com/0x2A9/goverload/requests"
 )
 
 func NewOverloader[RBT requests.IRequestBodyType]() *Overloader[RBT] {

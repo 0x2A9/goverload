@@ -8,8 +8,8 @@ import (
 	"github.com/gobwas/ws"
 	"github.com/gobwas/ws/wsutil"
 
-	"github.com/lamia-mortis/goverload/requests"
-	"github.com/lamia-mortis/goverload/responses"
+	"github.com/0x2A9/goverload/requests"
+	"github.com/0x2A9/goverload/responses"
 )
 
 type WsAdapter[RBT requests.IRequestBodyType] struct{}

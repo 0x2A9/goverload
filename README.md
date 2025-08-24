@@ -1,11 +1,18 @@
-**QUICK START**<br>
-𝘨𝘙𝘗𝘊 𝘴𝘶𝘱𝘱𝘰𝘳𝘵 𝘪𝘴 𝘪𝘯 𝘥𝘦𝘷𝘦𝘭𝘰𝘱𝘮𝘦𝘯𝘵
+# Goverload
+A lightweight **load-testing** library for sending a configurable number of requests over a defined time period. Currently supports **HTTP**, **WebSocket**, **gRPC** support in **development**
 
+# Set Up 
+Install dependencies by running the following command from the project **root**:
+```bash
+go mod download && go mod verify
+```
+
+# Usage
 ```go
 import (
-	"github.com/lamia-mortis/goverload"
-	"github.com/lamia-mortis/goverload/helpers/enums"
-	"github.com/lamia-mortis/goverload/requests"
+	"github.com/0x2A9/goverload"
+	"github.com/0x2A9/goverload/helpers/enums"
+	"github.com/0x2A9/goverload/requests"
 )
 ```
 

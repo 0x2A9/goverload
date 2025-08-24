@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"reflect"
 
-	"github.com/lamia-mortis/goverload/requests"
-	"github.com/lamia-mortis/goverload/responses"
+	"github.com/0x2A9/goverload/requests"
+	"github.com/0x2A9/goverload/responses"
 )
 
 type HttpAdapter[RBT requests.IRequestBodyType] struct{}
